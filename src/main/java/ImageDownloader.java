@@ -97,6 +97,11 @@ public class ImageDownloader {
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
+            // Set browser-like headers
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
+            connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            connection.setRequestProperty("Referer", "https://www.google.com/");
             int status = connection.getResponseCode();
             if (status != 200) {
                 System.err.println("Failed to download image (HTTP status: " + status + "): " + imgUrl);
