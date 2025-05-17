@@ -5,7 +5,7 @@ A Java command-line tool to download images from a list of web gallery URLs. Ima
 ## Features
 - Downloads all images linked from a list of gallery URLs.
 - Organizes images into folders named after the URL path (slashes replaced with underscores).
-- Retries failed downloads at the end, with a delay between retries.
+- Retries failed downloads at the end (no delay between retries).
 - Allows custom downloads folder as a command-line parameter.
 - Ignores `input.txt` and `downloads/` in version control (see `.gitignore`).
 
@@ -37,11 +37,11 @@ java -jar target/ImageDownloader-1.0.jar input.txt my_downloads
   - Downloads the page and finds all image links.
   - Creates a folder named after the URL path (slashes replaced with underscores).
   - Downloads each image into the folder.
-  - If a download fails (non-200 HTTP status), retries at the end with a delay between retries.
+  - If a download fails (non-200 HTTP status), retries at the end (no delay between retries).
 
 ## Notes
 - The `downloads/` folder and `input.txt` are excluded from git by default.
-- If you download too quickly, some servers may block you. The tool retries failed downloads with a delay.
+- If you download too quickly, some servers may block you. The tool retries failed downloads at the end.
 - Requires Java 21+ and Maven.
 
 ## Example `input.txt`
