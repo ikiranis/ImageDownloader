@@ -1,0 +1,20 @@
+# Maven and Java build output
+/target/
+
+# IDE and editor folders
+/.idea/
+*.iml
+*.class
+/.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# User and runtime files
+input.txt
+downloads/
+
+# Maven wrapper
+mvnw
+mvnw.cmd
