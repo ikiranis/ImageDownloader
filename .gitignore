@@ -14,7 +14,3 @@ Thumbs.db
 # User and runtime files
 input.txt
 downloads/
-
-# Maven wrapper
-mvnw
-mvnw.cmd
