@@ -67,13 +67,6 @@ public class ImageDownloader {
                     System.out.println("Retrying failed downloads...");
                     for (String imgUrl : retryList) {
                         downloadImage(imgUrl, urlDir);
-                        try {
-                            Thread.sleep(3000); // 3 second delay between retry downloads
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                            System.err.println("Download interrupted during retry");
-                            return;
-                        }
                     }
                 }
             } catch (Exception e) {
