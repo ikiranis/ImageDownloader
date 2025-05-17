@@ -2,9 +2,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.apache.commons.io.FileUtils;
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +11,7 @@ import java.util.*;
 public class ImageDownloader {
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java -cp <classpath> ImageDownloader <input_file>");
+            System.out.println("Usage: java -jar ImageDownloader <input_file>");
             return;
         }
         String inputFile = args[0];
@@ -39,8 +37,21 @@ public class ImageDownloader {
                         imageLinks.add(href);
                     }
                 }
-                // Create a folder for this URL
-                String folderName = url.replaceAll("[\\/:*?\"<>|]", "_");
+                // Create a folder for this URL using the path after the domain
+                String folderName = "";
+                try {
+                    java.net.URI uri = java.net.URI.create(url);
+                    String path = uri.getRawPath();
+                    if (path != null && !path.isEmpty()) {
+                        // Remove leading slash if present
+                        if (path.startsWith("/")) path = path.substring(1);
+                        folderName = path.replaceAll("/", "_");
+                    } else {
+                        folderName = "root";
+                    }
+                } catch (Exception e) {
+                    folderName = url.replaceAll("[\\/:*?\"<>|]", "_");
+                }
                 Path urlDir = downloadsDir.resolve(folderName);
                 Files.createDirectories(urlDir);
                 List<String> retryList = new ArrayList<>();
@@ -55,6 +66,13 @@ public class ImageDownloader {
                     System.out.println("Retrying failed downloads...");
                     for (String imgUrl : retryList) {
                         downloadImage(imgUrl, urlDir);
+                        try {
+                            Thread.sleep(3000); // 3 second delay between retry downloads
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            System.err.println("Download interrupted during retry");
+                            return;
+                        }
                     }
                 }
             } catch (Exception e) {
