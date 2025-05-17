@@ -1,18 +1,54 @@
-# ImageDownloader Java Utility
+# ImageDownloader
 
-This utility reads a text file containing URLs, fetches each URL, and downloads all images (not thumbnails, only images that open when clicking links) into separate folders under a `downloads` directory.
+A Java command-line tool to download images from a list of web gallery URLs. Images are organized into folders based on the URL path after the domain.
+
+## Features
+- Downloads all images linked from a list of gallery URLs.
+- Organizes images into folders named after the URL path (slashes replaced with underscores).
+- Retries failed downloads at the end, with a delay between retries.
+- Allows custom downloads folder as a command-line parameter.
+- Ignores `input.txt` and `downloads/` in version control (see `.gitignore`).
 
 ## Usage
-- Place your text file with URLs in the project root.
-- Run the utility specifying the input file.
-- Images from each URL will be saved in a separate folder under `downloads/`.
 
-## Requirements
-- Java 11 or higher
-- Internet connection
+### Build
+
+```
+mvn package
+```
+
+This will generate a fat JAR with dependencies in `target/ImageDownloader-1.0.jar`.
+
+### Run
+
+```
+java -jar target/ImageDownloader-1.0.jar <input_file> [downloads_folder]
+```
+- `<input_file>`: Path to a text file containing one gallery URL per line (e.g., `input.txt`).
+- `[downloads_folder]` (optional): Directory to save downloaded images. Defaults to `downloads` if not specified.
+
+Example:
+```
+java -jar target/ImageDownloader-1.0.jar input.txt my_downloads
+```
 
 ## How it works
-- Reads each URL from the input file
-- Fetches the HTML content
-- Finds all links to images that open in a new page
-- Downloads those images into a dedicated folder for each URL
+- For each URL in the input file:
+  - Downloads the page and finds all image links.
+  - Creates a folder named after the URL path (slashes replaced with underscores).
+  - Downloads each image into the folder.
+  - If a download fails (non-200 HTTP status), retries at the end with a delay between retries.
+
+## Notes
+- The `downloads/` folder and `input.txt` are excluded from git by default.
+- If you download too quickly, some servers may block you. The tool retries failed downloads with a delay.
+- Requires Java 21+ and Maven.
+
+## Example `input.txt`
+```
+https://example.com/gallery/album1/
+https://example.com/gallery/album2/
+```
+
+## License
+MIT

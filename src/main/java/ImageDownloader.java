@@ -11,13 +11,14 @@ import java.util.*;
 public class ImageDownloader {
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java -jar ImageDownloader <input_file>");
+            System.out.println("Usage: java -jar ImageDownloader <input_file> [downloads_folder]");
             return;
         }
         String inputFile = args[0];
+        String downloadsFolder = args.length >= 2 ? args[1] : "downloads";
         List<String> urls = readUrlsFromFile(inputFile);
         if (urls == null) return;
-        Path downloadsDir = Paths.get("downloads");
+        Path downloadsDir = Paths.get(downloadsFolder);
         try {
             Files.createDirectories(downloadsDir);
         } catch (IOException e) {
