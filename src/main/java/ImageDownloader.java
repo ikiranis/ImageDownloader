@@ -15,7 +15,17 @@ public class ImageDownloader {
             return;
         }
         String inputFile = args[0];
-        String downloadsFolder = args.length >= 2 ? args[1] : "downloads";
+        String downloadsFolder;
+        if (args.length >= 2) {
+            downloadsFolder = args[1];
+        } else {
+            // Use input file name (without extension) as downloads folder
+            Path inputPath = Paths.get(inputFile);
+            String fileName = inputPath.getFileName().toString();
+            int dotIdx = fileName.lastIndexOf('.');
+            String baseName = (dotIdx > 0) ? fileName.substring(0, dotIdx) : fileName;
+            downloadsFolder = inputPath.getParent() != null ? inputPath.getParent().resolve(baseName).toString() : baseName;
+        }
         List<String> urls = readUrlsFromFile(inputFile);
         if (urls == null) return;
         Path downloadsDir = Paths.get(downloadsFolder);
