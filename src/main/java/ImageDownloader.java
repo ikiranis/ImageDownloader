@@ -46,7 +46,7 @@ public class ImageDownloader {
                     if (path != null && !path.isEmpty()) {
                         // Remove leading slash if present
                         if (path.startsWith("/")) path = path.substring(1);
-                        folderName = path.replaceAll("/", "_");
+                        folderName = path.replaceAll("/", " ");
                     } else {
                         folderName = "root";
                     }
@@ -68,6 +68,20 @@ public class ImageDownloader {
                     for (String imgUrl : retryList) {
                         downloadImage(imgUrl, urlDir);
                     }
+                }
+                // After finishing this URL, check if the folder is empty and delete if so
+                try {
+                    File dir = urlDir.toFile();
+                    String[] files = dir.list();
+                    if (files != null && files.length == 0) {
+                        if (dir.delete()) {
+                            System.out.println("Deleted empty folder: " + dir.getPath());
+                        } else {
+                            System.err.println("Failed to delete empty folder: " + dir.getPath());
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error checking/deleting folder: " + urlDir + " - " + e.getMessage());
                 }
             } catch (Exception e) {
                 System.err.println("Error processing " + url + ": " + e.getMessage());
