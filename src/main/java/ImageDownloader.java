@@ -52,7 +52,7 @@ public class ImageDownloader {
                 String folderName = "";
                 try {
                     java.net.URI uri = java.net.URI.create(url);
-                    String path = uri.getRawPath();
+                    String path = uri.getPath();
                     if (path != null && !path.isEmpty()) {
                         // Remove leading slash if present
                         if (path.startsWith("/")) path = path.substring(1);
