@@ -56,7 +56,7 @@ public class ImageDownloader {
                     if (path != null && !path.isEmpty()) {
                         // Remove leading slash if present
                         if (path.startsWith("/")) path = path.substring(1);
-                        folderName = path.replaceAll("/", " ");
+                        folderName = path.replaceAll("/", " ").trim();
                     } else {
                         folderName = "root";
                     }
